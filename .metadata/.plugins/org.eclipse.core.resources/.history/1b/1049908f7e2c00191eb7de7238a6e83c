@@ -1,0 +1,30 @@
+package poppop_beat_11;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+public class Game extends Thread {
+	public void screenDraw(Graphics2D g){
+
+		g.drawImage(noteRoadImage, 600, 0, null);
+		g.drawImage(noteRoadImage, 750, 0, null);
+		g.drawImage(noteRoadImage, 900, 0, null);
+		g.drawImage(noteRoadImage, 1050, 0, null);
+		g.drawImage(noteRoadImage, 1200, 0, null);
+		g.drawImage(noteImage, 600, 0, null);
+		g.drawImage(gameInfoImage, 100, 980, null);
+		g.drawImage(judgementLineImage, 100, 850, null);
+		g.setColor(Color.white);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(new Font("Land", Font.BOLD,60));
+		g.drawString("Song Title", 150, 1050);
+		g.drawString("000000", 900, 1050);			
+		g.drawString("EASY", 1700, 1050);
+	}
+	@Override
+	public void run(){
+		
+	}
+}

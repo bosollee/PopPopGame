@@ -1,0 +1,12 @@
+package poppop_beat_7;
+
+public class Track {
+
+	private String titleImage;	//제목 이미지
+	private String startImage;	//게임 선택 화면 기본 곡 표지이미지
+	private String gameImage;	//곡 선택 후 표지이미지
+	private String startMusic;	//게임 선택 창 음악
+	private String gameMusic;	//선택한 곡 실행했을 때 음악
+	
+	
+}

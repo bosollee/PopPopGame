@@ -1,0 +1,31 @@
+package poppop_beat_11;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class KeyListener extends KeyAdapter{
+	@Override
+	public void keyPressed(KeyEvent e){
+		if(e.getKeyCode() == KeyEvent.VK_LEFT){
+			
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_UP){
+			
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+			
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+			
+		}
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e){
+		
+	}
+
+}

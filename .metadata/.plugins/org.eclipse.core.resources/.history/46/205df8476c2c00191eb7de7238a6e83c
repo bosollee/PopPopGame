@@ -1,0 +1,105 @@
+package poppop_beat_4.copy;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import poppop_beat.Main;
+import poppop_beat.Music;
+
+public class PopPopBeat extends JFrame {
+
+	private Image screenImage;
+	private Graphics screenGraphic;
+
+	private Image introBackground = new ImageIcon(Main.class.getResource("../images/introBGimg(title).jpg")).getImage();
+	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+
+	private ImageIcon exitBtnEnteredImg = new ImageIcon(Main.class.getResource("../images/exitBtnClicked.png"));
+	private ImageIcon exitBtnImg = new ImageIcon(Main.class.getResource("../images/exitBtn.png"));
+	private JButton exitBtn = new JButton(exitBtnImg);
+
+	private int mouseX, mouseY;
+
+	public PopPopBeat() {
+		setUndecorated(true);
+		setTitle("PopPop Beat");
+		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setBackground(new Color(0, 0, 0, 0));
+		setLayout(null);
+
+		// exitButton
+		exitBtn.setBounds(15, 15, 80, 80);
+		exitBtn.setBorderPainted(false);
+		exitBtn.setContentAreaFilled(false);
+		exitBtn.setFocusPainted(false);
+		exitBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				exitBtn.setIcon(exitBtnEnteredImg);
+				exitBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3",false);
+				ButtonEnteredMusic.start();
+			}
+
+			public void mouseExited(MouseEvent e) {
+				exitBtn.setIcon(exitBtnImg);
+				exitBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			public void mousePressed(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		add(exitBtn);
+
+		// menuBar
+		menuBar.setBounds(0, 0, 100, 1080);
+		menuBar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();
+			}
+		});
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getXOnScreen();
+				int y = e.getYOnScreen();
+				setLocation(x - mouseX, y - mouseY);
+			}
+		});
+		add(menuBar);
+
+		Music introMusic = new Music("introBGmusic.mp3", true);
+		introMusic.start();
+	}
+
+	public void paint(Graphics g) {
+		screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		screenGraphic = screenImage.getGraphics();
+		screenDraw(screenGraphic);
+		g.drawImage(screenImage, 0, 0, null);
+	}
+
+	public void screenDraw(Graphics g) {
+		g.drawImage(introBackground, 0, 0, null);
+		paintComponents(g);
+		this.repaint();
+	}
+
+}

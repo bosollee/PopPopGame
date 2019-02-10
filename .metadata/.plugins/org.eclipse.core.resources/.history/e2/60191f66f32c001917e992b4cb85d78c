@@ -1,0 +1,179 @@
+package poppop_beat_16;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+import poppop_beat.Main;
+
+public class Game extends Thread {
+	private int reachTime = 2;
+
+	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
+	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
+
+	private Image noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+
+	private String titleName;
+	private String difficulty;
+	private String musicTitle;
+	private Music gameMusic;
+	
+	ArrayList<Note> noteList = new ArrayList<Note>();
+
+	public Game(String titleName, String difficulty, String musicTitle) {
+		this.titleName = titleName;
+		this.difficulty = difficulty;
+		this.musicTitle = musicTitle;
+		gameMusic = new Music(this.musicTitle, false);
+	}
+	
+	public void screenDraw(Graphics2D g) {
+
+		g.drawImage(noteRoadLeftImage, 600, 0, null);
+		g.drawImage(noteRoadUpImage, 750, 0, null);
+		g.drawImage(noteRoadSpaceImage, 900, 0, null);
+		g.drawImage(noteRoadDownImage, 1050, 0, null);
+		g.drawImage(noteRoadRightImage, 1200, 0, null);
+		g.drawImage(judgementLineImage, 100, 850, null);
+
+		for (int i = 0; i < noteList.size(); i++) {
+			Note note = noteList.get(i);
+			if (!note.isProceeded()) {
+				noteList.remove(i);
+				i--;
+			} else {
+				note.screenDraw(g);
+			}
+		}
+
+		g.drawImage(gameInfoImage, 100, 980, null);
+		g.setColor(Color.white);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(new Font("Land", Font.BOLD, 60));
+		g.drawString(titleName, 150, 1050);
+		g.drawString("000000", 900, 1050);
+		g.drawString(difficulty, 1700, 1050);
+		g.drawImage(flareImage, 600, 500, null);
+	}
+
+	public void pressLeft() {
+		judge("Left");
+		noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseLeft() {
+		noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressUp() {
+		judge("Up");
+		noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseUp() {
+		noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressSpace() {
+		judge("Space");
+		noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseSpace() {
+		noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressDown() {
+		judge("Down");
+		noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseDown() {
+		noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressRight() {
+		judge("Right");
+		noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseRight() {
+		noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	@Override
+	public void run() {
+		dropNotes(this.titleName);
+	}
+
+	public void close() {
+		gameMusic.close();
+		this.interrupt();
+	}
+
+	public void dropNotes(String titleName) {
+		Beat[] beats = null;
+		if (titleName.equals("Chill") && difficulty.equals("Easy")) {
+			int startTime = 2500 - reachTime * 1000;
+			int gap = 215 / 2;
+			beats = new Beat[] { new Beat(startTime, "Space"), new Beat(startTime + gap * 3, "Space"),
+					new Beat(startTime + gap * 6, "Space"), new Beat(startTime + gap * 9, "Space"),
+					new Beat(startTime + gap * 12, "Space"), new Beat(startTime + gap * 15, "Space"),
+					new Beat(startTime + gap * 18, "Space"),
+
+			}; // Chill easy 노래 노트
+		} else if (titleName.equals("Deep Dreams") && difficulty.equals("Easy")) {
+			int startTime = 1000;
+			beats = new Beat[] { new Beat(startTime, "Space"), }; // Deep Dreams
+																	// easy 노래
+																	// 노트
+		} else if (titleName.equals("White Winds") && difficulty.equals("Easy")) {
+			int startTime = 1000;
+			beats = new Beat[] { new Beat(startTime, "Space"), }; // White Winds
+																	// easy 노래
+																	// 노트
+		}
+
+		int i = 0;
+		gameMusic.start();
+
+		while (i < beats.length && !isInterrupted()) {
+			boolean dropped = false;
+			if (beats[i].getTime() <= gameMusic.getTime()) {
+				Note note = new Note(beats[i].getNoteName());
+				note.start();
+				noteList.add(note);
+				i++;
+				dropped = true;
+			}
+			if (!dropped) {
+				try {
+					Thread.sleep(5);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public void judge(String input){
+		for(int i =0; i<noteList.size();i++){
+			Note note = noteList.get(i);
+			if(input.equals(note.getNoteType())){
+				note.judge();
+				break;
+			}
+		}
+	}
+	
+}

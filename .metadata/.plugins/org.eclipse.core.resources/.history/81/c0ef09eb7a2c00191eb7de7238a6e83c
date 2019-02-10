@@ -1,0 +1,461 @@
+package poppop_beat_10;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import poppop_beat.Main;
+import poppop_beat.Music;
+
+public class PopPopBeat extends JFrame {
+
+	private Image screenImage;
+	private Graphics screenGraphic;
+
+	private Image background = new ImageIcon(Main.class.getResource("../images/introBGimg(title).jpg")).getImage();
+	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
+	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
+	private Image noteRoadImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteImage = new ImageIcon(Main.class.getResource("../images/note.png")).getImage();
+	
+	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+
+	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitBtnClicked.png"));
+	private ImageIcon exitButtonImage = new ImageIcon(Main.class.getResource("../images/exitBtn.png"));
+	private ImageIcon startButtonEnteredImage = new ImageIcon(
+			Main.class.getResource("../images/startButtonEntered.png"));
+	private ImageIcon startButtonImage = new ImageIcon(Main.class.getResource("../images/startButton.png"));
+	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+	private ImageIcon quitButtonImage = new ImageIcon(Main.class.getResource("../images/quitButton.png"));
+	private ImageIcon leftButtonImage = new ImageIcon(Main.class.getResource("../images/leftButton.png"));
+	private ImageIcon leftButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/leftButtonEntered.png"));
+	private ImageIcon rightButtonEnteredImage = new ImageIcon(
+			Main.class.getResource("../images/rightButtonEntered.png"));
+	private ImageIcon rightButtonImage = new ImageIcon(Main.class.getResource("../images/rightButton.png"));
+	private ImageIcon easyButtonImage = new ImageIcon(Main.class.getResource("../images/easyButton.png"));
+	private ImageIcon easyButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/easyButtonEntered.png"));
+	private ImageIcon hardButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/hardButtonEntered.png"));
+	private ImageIcon hardButtonImage = new ImageIcon(Main.class.getResource("../images/hardButton.png"));
+	private ImageIcon backButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/backButtonEntered.png"));
+	private ImageIcon backButtonImage = new ImageIcon(Main.class.getResource("../images/backButton.png"));
+
+	private JButton exitBtn = new JButton(exitButtonImage);
+	private JButton startBtn = new JButton(startButtonImage);
+	private JButton quitBtn = new JButton(quitButtonImage);
+	private JButton leftBtn = new JButton(leftButtonImage);
+	private JButton rightBtn = new JButton(rightButtonImage);
+	private JButton easyBtn = new JButton(easyButtonImage);
+	private JButton hardBtn = new JButton(hardButtonImage);
+	private JButton backBtn = new JButton(backButtonImage);
+
+	private int mouseX, mouseY;
+
+	private boolean isMainScreen = false;
+	private boolean isGameScreen = false;
+
+	ArrayList<Track> trackList = new ArrayList<Track>();
+	private Image titleImage;
+	private Image selectedImage;
+	private Music selectedMusic;
+	private Music introMusic = new Music("introBGmusic.mp3", true);
+	private int nowSelected = 0;
+
+	public PopPopBeat() {
+		setUndecorated(true);
+		setTitle("PopPop Beat");
+		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setBackground(new Color(0, 0, 0, 0));
+		setLayout(null);
+		introMusic.start();
+
+		trackList.add(
+				new Track("chill Title.png", "chill Start img.png", "chill Game img.png", "Chill.mp3", "Chill.mp3"));
+		trackList.add(new Track("deepdreams Title.png", "deepdream Start img.png", "deepdream Game img.png",
+				"deep dreams.mp3", "deep dreams.mp3"));
+		trackList.add(new Track("whitewinds Title.png", "whitewind Start img.png", "whitewind Game img.png",
+				"White Winds.mp3", "White Winds.mp3"));
+
+		// exitButton
+		exitBtn.setBounds(10, 15, 80, 80);
+		exitBtn.setBorderPainted(false);
+		exitBtn.setContentAreaFilled(false);
+		exitBtn.setFocusPainted(false);
+		exitBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				exitBtn.setIcon(exitButtonEnteredImage);
+				exitBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				exitBtn.setIcon(exitButtonImage);
+				exitBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		add(exitBtn);
+
+		// startButton
+		startBtn.setBounds(800, 800, 400, 100);
+		startBtn.setBorderPainted(false);
+		startBtn.setContentAreaFilled(false);
+		startBtn.setFocusPainted(false);
+		startBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				startBtn.setIcon(startButtonEnteredImage);
+				startBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				startBtn.setIcon(startButtonImage);
+				startBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				introMusic.close();
+				enterMain();
+			}
+		});
+		add(startBtn);
+
+		// quitButton
+		quitBtn.setBounds(800, 930, 400, 100);
+		quitBtn.setBorderPainted(false);
+		quitBtn.setContentAreaFilled(false);
+		quitBtn.setFocusPainted(false);
+		quitBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				quitBtn.setIcon(quitButtonEnteredImage);
+				quitBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				quitBtn.setIcon(quitButtonImage);
+				quitBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		add(quitBtn);
+
+		// leftButton
+		leftBtn.setVisible(false);
+		leftBtn.setBounds(350, 500, 100, 100);
+		leftBtn.setBorderPainted(false);
+		leftBtn.setContentAreaFilled(false);
+		leftBtn.setFocusPainted(false);
+		leftBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				leftBtn.setIcon(leftButtonEnteredImage);
+				leftBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				leftBtn.setIcon(leftButtonImage);
+				leftBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				selectLeft();
+			}
+		});
+		add(leftBtn);
+
+		// rightButton
+		rightBtn.setVisible(false);
+		rightBtn.setBounds(1500, 500, 100, 100);
+		rightBtn.setBorderPainted(false);
+		rightBtn.setContentAreaFilled(false);
+		rightBtn.setFocusPainted(false);
+		rightBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				rightBtn.setIcon(rightButtonEnteredImage);
+				rightBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				rightBtn.setIcon(rightButtonImage);
+				rightBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				selectRight();
+			}
+		});
+		add(rightBtn);
+
+		// easyButton
+		easyBtn.setVisible(false);
+		easyBtn.setBounds(650, 900, 250, 80);
+		easyBtn.setBorderPainted(false);
+		easyBtn.setContentAreaFilled(false);
+		easyBtn.setFocusPainted(false);
+		easyBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				easyBtn.setIcon(easyButtonEnteredImage);
+				easyBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				easyBtn.setIcon(easyButtonImage);
+				easyBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				gameStart(nowSelected, "easy");
+			}
+		});
+		add(easyBtn);
+
+		// easyButton
+		hardBtn.setVisible(false);
+		hardBtn.setBounds(1050, 900, 250, 80);
+		hardBtn.setBorderPainted(false);
+		hardBtn.setContentAreaFilled(false);
+		hardBtn.setFocusPainted(false);
+		hardBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				hardBtn.setIcon(hardButtonEnteredImage);
+				hardBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				hardBtn.setIcon(hardButtonImage);
+				hardBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				gameStart(nowSelected, "hard");
+			}
+		});
+		add(hardBtn);
+
+		// backButton
+		backBtn.setVisible(false);
+		backBtn.setBounds(10, 120, 80, 80);
+		backBtn.setBorderPainted(false);
+		backBtn.setContentAreaFilled(false);
+		backBtn.setFocusPainted(false);
+		backBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				backBtn.setIcon(backButtonEnteredImage);
+				backBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music ButtonEnteredMusic = new Music("ButtonEnterSound.mp3", false);
+				ButtonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				backBtn.setIcon(backButtonImage);
+				backBtn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+
+			public void mousePressed(MouseEvent e) {
+				Music buttonEnteredMusic = new Music("buttonEnterSound.mp3", false);
+				buttonEnteredMusic.start();
+				backToMain();
+			}
+		});
+		add(backBtn);
+
+		// menuBar
+		menuBar.setBounds(0, 0, 100, 1080);
+		menuBar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();
+			}
+		});
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getXOnScreen();
+				int y = e.getYOnScreen();
+				setLocation(x - mouseX, y - mouseY);
+			}
+		});
+		add(menuBar);
+
+	}
+
+	public void paint(Graphics g) {
+		screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		screenGraphic = screenImage.getGraphics();
+		screenDraw((Graphics2D)screenGraphic);
+		g.drawImage(screenImage, 0, 0, null);
+	}
+
+	public void screenDraw(Graphics g) {
+		g.drawImage(background, 0, 0, null);
+		if (isMainScreen) {
+			g.drawImage(selectedImage, 500, 300, null);
+			g.drawImage(titleImage, 700, 70, null);
+		} 
+		if (isGameScreen) {
+			g.drawImage(noteRoadImage, 600, 0, null);
+			g.drawImage(noteRoadImage, 750, 0, null);
+			g.drawImage(noteRoadImage, 900, 0, null);
+			g.drawImage(noteRoadImage, 1050, 0, null);
+			g.drawImage(noteRoadImage, 1200, 0, null);
+			g.drawImage(noteImage, 600, 0, null);
+			g.drawImage(gameInfoImage, 100, 980, null);
+			g.drawImage(judgementLineImage, 100, 850, null);
+			g.setColor(Color.white);
+			g.setFont(new Font("Arial", Font.BOLD,50));
+			g.drawString("Song Title", 120, 1030);
+		} 
+		paintComponents(g); // add된 것들 보여줌
+		this.repaint();
+	}
+
+	public void selectTrack(int nowSelected) {
+		if (selectedMusic != null)
+			selectedMusic.close();
+		titleImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getTitleImage()))
+				.getImage();
+		selectedImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getStartImage()))
+				.getImage();
+		selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(), true);
+		selectedMusic.start();
+	}
+
+	public void selectLeft() {
+		if (nowSelected == 0)
+			nowSelected = trackList.size() - 1;
+		else
+			nowSelected--;
+		selectTrack(nowSelected);
+	}
+
+	public void selectRight() {
+		if (nowSelected == trackList.size() - 1)
+			nowSelected = 0;
+		else
+			nowSelected++;
+		selectTrack(nowSelected);
+	}
+
+	public void gameStart(int nowSelected, String difficulty) {
+		if (selectedMusic != null)
+			selectedMusic.close();
+		isMainScreen = false;
+		leftBtn.setVisible(false);
+		rightBtn.setVisible(false);
+		easyBtn.setVisible(false);
+		hardBtn.setVisible(false);
+		backBtn.setVisible(true);
+		background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage()))
+				.getImage();
+		isGameScreen = true;
+	}
+
+	public void backToMain() {
+		isMainScreen = true;
+		leftBtn.setVisible(true);
+		rightBtn.setVisible(true);
+		easyBtn.setVisible(true);
+		hardBtn.setVisible(true);
+		backBtn.setVisible(false);
+		background = new ImageIcon(Main.class.getResource("../images/mainBGimg.jpg")).getImage();
+		selectTrack(nowSelected);
+		isGameScreen = false;
+	}
+
+	public void enterMain() {
+		startBtn.setVisible(false);
+		quitBtn.setVisible(false);
+		background = new ImageIcon(Main.class.getResource("../images/mainBGimg.jpg")).getImage();
+		isMainScreen = true;
+		leftBtn.setVisible(true);
+		rightBtn.setVisible(true);
+		easyBtn.setVisible(true);
+		hardBtn.setVisible(true);
+		introMusic.close();
+		selectTrack(0);
+
+	}
+}

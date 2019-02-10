@@ -1,0 +1,113 @@
+package poppop_beat_13;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+import poppop_beat.Main;
+
+public class Game extends Thread {
+	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
+	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
+
+	private Image noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	private Image noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+
+	private String titleName;
+	private String difficulty;
+	private String musicTitle;
+	private Music gameMusic;
+
+	ArrayList<Note> noteList = new ArrayList<Note>();
+
+	public Game(String titleName, String difficulty, String musicTitle) {
+		this.titleName = titleName;
+		this.difficulty = difficulty;
+		this.musicTitle = musicTitle;
+		gameMusic = new Music(this.musicTitle, false);
+		gameMusic.start();
+	}
+
+	public void screenDraw(Graphics2D g) {
+
+		g.drawImage(noteRoadLeftImage, 600, 0, null);
+		g.drawImage(noteRoadUpImage, 750, 0, null);
+		g.drawImage(noteRoadSpaceImage, 900, 0, null);
+		g.drawImage(noteRoadDownImage, 1050, 0, null);
+		g.drawImage(noteRoadRightImage, 1200, 0, null);
+		g.drawImage(gameInfoImage, 100, 980, null);
+		g.drawImage(judgementLineImage, 100, 850, null);
+		g.setColor(Color.white);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(new Font("Land", Font.BOLD, 60));
+		g.drawString(titleName, 150, 1050);
+		g.drawString("000000", 900, 1050);
+		g.drawString(difficulty, 1700, 1050);
+	}
+
+	public void pressLeft() {
+		noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseLeft() {
+		noteRoadLeftImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressUp() {
+		noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseUp() {
+		noteRoadUpImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressSpace() {
+		noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseSpace() {
+		noteRoadSpaceImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressDown() {
+		noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseDown() {
+		noteRoadDownImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	public void pressRight() {
+		noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoadPressed.png")).getImage();
+	}
+
+	public void releaseRight() {
+		noteRoadRightImage = new ImageIcon(Main.class.getResource("../images/noteRoad.png")).getImage();
+	}
+
+	@Override
+	public void run() {
+
+	}
+
+	public void close() {
+		gameMusic.close();
+		this.interrupt();
+	}
+
+	public void dropNotes(String titleNames) {
+		noteList.add(new Note(600, 0, "short"));
+		noteList.add(new Note(750, 0, "short"));
+		noteList.add(new Note(900, 0, "short"));
+		noteList.add(new Note(1050, 0, "short"));
+		noteList.add(new Note(1200, 0, "short"));
+	}
+}

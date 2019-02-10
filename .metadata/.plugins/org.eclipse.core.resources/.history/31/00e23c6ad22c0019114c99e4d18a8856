@@ -1,0 +1,12 @@
+package poppop_beat_13;
+
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import poppop_beat.Main;
+
+public class Note extends Thread{
+	private Image noteImage = new ImageIcon(Main.class.getResource("../images/note.png")).getImage();
+
+}

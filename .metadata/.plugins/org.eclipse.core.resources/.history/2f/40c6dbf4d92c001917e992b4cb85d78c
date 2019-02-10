@@ -1,0 +1,50 @@
+package poppop_beat_14;
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import poppop_beat.Main;
+
+public class Note extends Thread {
+	private int noteSpeed = 7;
+	private int sleepTime = 10;
+	private Image noteImage = new ImageIcon(Main.class.getResource("../images/note.png")).getImage();
+	private int x, y = 850 - 1000 / sleepTime * noteSpeed;
+	private String noteType;
+
+	public Note(String noteType) {
+		if(noteType.equals("Left"))
+		this.x = x;
+		this.noteType = noteType;
+	}
+
+	public void screenDraw(Graphics2D g) {
+		if (!noteType.equals("Space"))
+		{
+			g.drawImage(noteImage, x, y, null);
+		}
+		else
+		{
+			g.drawImage(noteImage, x, y, null);
+			g.drawImage(noteImage, x + 100, y, null);
+		}
+	}
+
+	public void drop() {
+		y += noteSpeed;
+	}
+
+	@Override
+	public void run() {
+		try {
+			while (true) {
+				drop();
+				Thread.sleep(sleepTime);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+}
