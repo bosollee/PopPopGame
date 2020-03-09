@@ -1,2 +1,3 @@
 # PopPopGame
-java, RhythmGame
+
+🎵 Rhythm Game: Java
